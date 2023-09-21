@@ -28,12 +28,17 @@ android {
         }
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion =  "1.1.0"
+    }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
 
     buildFeatures {
         dataBinding = true
+        compose = true
     }
 
     compileOptions {
