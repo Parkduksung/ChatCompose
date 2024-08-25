@@ -1,25 +1,26 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    kotlin("kapt")
-    id("dagger.hilt.android.plugin")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.jetbrains.kotlin.android)
 }
 
 android {
-    compileSdk = AppConfig.compileSdk
+    namespace = "com.example.chatcompose"
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.chatcompose"
-        minSdk = AppConfig.minSdk
-        targetSdk = AppConfig.targetSdk
-        versionCode = AppConfig.versionCode
-        versionName = AppConfig.versionName
+        minSdk = 24
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
 
-        testInstrumentationRunner = AppConfig.androidTestInstrumentation
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
-
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -27,78 +28,40 @@ android {
             )
         }
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion =  "1.1.0"
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    buildFeatures {
-        dataBinding = true
-        compose = true
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
-
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.5.31")
-    implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["compose_version"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.activity:activity-compose:1.3.1")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.foundation:foundation:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.foundation:foundation-layout:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.animation:animation:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.runtime:runtime:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.runtime:runtime-livedata:${rootProject.extra["compose_version"]}")
-    implementation("androidx.navigation:navigation-compose:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
-
-
-    //app libs
-    implementation(AppDependencies.appLibraries)
-
-    //jectpack libs
-    implementation(AppDependencies.jetpackLibraries)
-
-    //kapt libs
-    kapt(AppDependencies.kaptLibraries)
-
-    //network libs
-    implementation(AppDependencies.networkLibraries)
-
-    //test libs
-    testImplementation(AppDependencies.testLibraries)
-    testImplementation("org.mockito:mockito-inline:3.3.3")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
-    androidTestImplementation(AppDependencies.androidTestLibraries)
-
-    implementation("androidx.activity:activity-compose:1.5.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-
-    implementation("com.google.android.material:material:1.3.0-alpha03")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2")
-
-    // testImplementation for pure JVM unit tests
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.2")
-
-    // androidTestImplementation for Android instrumentation tests
-    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.2")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }
